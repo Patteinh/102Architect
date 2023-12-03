@@ -1,0 +1,76 @@
+#!/usr/bin/python3
+
+import sys
+import math
+
+def help_me() :
+
+    print("USAGE")
+    print("    ./102architect x y transfo1 arg11 [arg12] [transfo2 arg12 [arg22]] ...\n")
+    print("DESCRIPTION")
+    print("    x   abscissa of the original point")
+    print("    y   ordinate of the original point\n")
+    print("    transfo arg1 [arg2]")
+    print("    -t i j translation along vector (i, j)")
+    print("    -z m n scaling by factors m (x-axis) and n (y-axis)")
+    print("    -r d rotation centered in O by a d degree angle")
+    print("    -s d reflection over the axis passing through O with an inclination angle of d degrees")
+
+def T(i, j, x, y) :
+
+    print("Translation along the vector (", int(i), ", ", int(j), ")", sep = "")
+
+def Z(m, n, x, y) :
+
+    print("Scaling by factors ", int(m), " and ", int(n), "", sep = "")
+
+def R(alpha, x, y) :
+
+    print("Rotation by a ", int(alpha), " degree angle", sep = "")
+
+
+def my_reflection(alpha, x, y) :
+
+    print("Reflection over an axis with an inclination angle of ", int(alpha), " degrees", sep = "")
+
+def main() :
+
+    if sys.argv[1] == "-h" :
+        help_me()
+
+    try :
+          x = sys.argv[1]
+          y = sys.argv[2]
+          intx = int(x)
+          inty = int(y)
+
+    except IndexError :
+        sys.exit(84)
+
+    M = [1.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 1.00]
+    for i in range(len(sys.argv)) :
+          if sys.argv[i] == "-t" :
+              T(float(sys.argv[4]), float(sys.argv[5]), float(x), float(y))
+              M[2] = float(sys.argv[4]) + M[2]
+              M[5] = float(sys.argv[5]) + M[5]
+          if sys.argv[i] == "-z" :
+              Z(float(sys.argv[4]), float(sys.argv[5]), float(x), float(y))
+              M[0] = float(sys.argv[4]) * M[0]
+              M[4] = float(sys.argv[5]) * M[4]
+          if sys.argv[i] == "-r" :
+              R(float(sys.argv[4]), int(x), int(y))
+              M[0] = math.cos(float(sys.argv[4])* math.pi / 180)
+              M[1] = -math.sin(float(sys.argv[4])* math.pi / 180)
+              M[3] = math.sin(float(sys.argv[4]) * math.pi / 180)
+              M[4] = math.cos(float(sys.argv[4])* math.pi / 180)
+          if sys.argv[i] == "-s" :
+              my_reflection(float(sys.argv[i + 1]), int(x), int(y))
+              M[0] = math.sin(float(sys.argv[4])* math.pi / 180)
+
+    print("%.2f"%M[0], "%.2f"%M[1], "%.2f"%M[2], sep = '\t')
+    print("%.2f"%M[3], "%.2f"%M[4], "%.2f"%M[5], sep = '\t')
+    print("%.2f"%M[6], "%.2f"%M[7], "%.2f"%M[8], sep = '\t')
+    L1 = M[0] * intx + M[1] * inty + M[2]
+    L2 = M[3] * intx + M[4] * inty + M[5]
+    print("(","%.2f"%intx,", ","%.2f"%inty,") => (%.2f"%L1,", %.2f"%L2,")", sep = "")
+main()
