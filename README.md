@@ -11,7 +11,7 @@ This project focuses on implementing geometric transformations for home planning
 - **Language:** Python
 - **Binary Name:** 102architect
 
-## Project Overview 📜
+## Project Overview 🔎
 
 Your task is to develop a program that computes the coordinates of a point after several geometric transformations, using homogeneous coordinates. The transformations include:
 
